@@ -1,11 +1,11 @@
 [build]
-  publish = "public"  # Hexo 默认生成到 public 目录
-  command = "npm run build"  # 使用 package.json 中的 build 脚本
+  publish = "public"
+  command = "git submodule update --init --recursive && npm run clean && npm run build"
 
 [build.environment]
-  NODE_VERSION = "18"  # 指定 Node.js 版本
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--cache .npm-cache"
 
-# 如果你使用图片/CDN 等，可以添加重定向规则
 [[redirects]]
   from = "/*"
   to = "/index.html"
