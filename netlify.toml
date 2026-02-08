@@ -1,19 +1,9 @@
 [build]
   publish = "public"
   command = "npm run clean && npm run build"
-
 [build.environment]
-  NODE_VERSION = "16"  # 关键：使用 Node.js 16
-
-# 可选：添加更详细的构建命令
-[build.processing]
-  skip_processing = true
-
+  NODE_VERSION = "16"
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-# 可选：清理缓存
-[[plugins]]
-  package = "@netlify/plugin-cache"
