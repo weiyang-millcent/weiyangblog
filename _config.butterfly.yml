@@ -65,11 +65,11 @@ nav:
   fixed: true
 
 menu:
-  # Home: / || fas fa-home
-  # List||fas fa-list:
-  #   Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
-
+  首页: / || fas fa-home
+  归档: /archives/ || fas fa-archive
+  分类: /categories/ || fas fa-folder-open
+  标签: /tags/ || fas fa-tags
+  关于: /about/ || fas fa-user
 # --------------------------------------
 # Code Blocks Settings
 # --------------------------------------
@@ -194,7 +194,7 @@ index_top_img_height:
 
 # The subtitle on homepage
 subtitle:
-  enable: false
+  enable: true
   # Typewriter Effect
   effect: true
   # Customize typed.js
@@ -209,7 +209,7 @@ subtitle:
   # 3 - jinrishici.com
   source: false
   # If you close the typewriter effect, the subtitle will only show the first line of sub
-  sub:
+  sub: Try to do better  # 注意：这行配置前面的注释符号 # 已移除
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -318,87 +318,84 @@ footer:
 aside:
   enable: true
   hide: false
-  # Show the button to hide the aside in bottom right button
   button: true
   mobile: true
-  # Position: left / right
   position: right
   display:
     archive: true
     tag: true
     category: true
+  
   card_author:
     enable: true
+    title: 关于作者
     description:
     button:
       enable: true
       icon: fab fa-github
-      text: Follow Me
-      link: https://github.com/xxxxxx
+      text: 关注我
+      link: https://github.com/weiyang-millcent
+  
   card_announcement:
     enable: true
-    content: This is my Blog
+    title: 公告
+    content: 欢迎来到我的博客！
+  
   card_recent_post:
     enable: true
-    # If set 0 will show all
+    title: 最新文章
     limit: 5
-    # Sort: date / updated
     sort: date
     sort_order:
+  
   card_newest_comments:
     enable: false
+    title: 最新评论
     sort_order:
     limit: 6
-    # Unit: mins, save data to localStorage
     storage: 10
     avatar: true
+  
   card_categories:
     enable: true
-    # If set 0 will show all
+    title: 分类
     limit: 8
-    # Choose: none / true / false
     expand: none
     sort_order:
+  
   card_tags:
     enable: true
-    # If set 0 will show all
+    title: 标签
     limit: 40
     color: false
     custom_colors:
-    # Order of tags, random/name/length
     orderby: random
-    # Sort of order. 1, asc for ascending; -1, desc for descending
     order: 1
     sort_order:
+  
   card_archives:
     enable: true
-    # Type: monthly / yearly
+    title: 归档
     type: monthly
-    # Eg: YYYY年MM月
-    format: MMMM YYYY
-    # Sort of order. 1, asc for ascending; -1, desc for descending
+    format: YYYY年MM月            # 改为中文格式
     order: -1
-    # If set 0 will show all
     limit: 8
     sort_order:
+  
   card_post_series:
     enable: true
-    # The title shows the series name
+    title: 系列文章
     series_title: false
-    # Order by title or date
     orderBy: 'date'
-    # Sort of order. 1, asc for ascending; -1, desc for descending
     order: -1
+  
   card_webinfo:
     enable: true
+    title: 网站信息
     post_count: true
     last_push_date: true
     sort_order:
-    # Time difference between publish date and now
-    # Formal: Month/Day/Year Time or Year/Month/Day Time
-    # Leave it empty if you don't enable this feature
     runtime_date:
-
 # --------------------------------------
 # Bottom right button
 # --------------------------------------
@@ -1116,7 +1113,7 @@ inject:
   head:
     - |
       <style>
-        /* ========== 纯点击特效样式 ========== */
+        /* ========== 1. 纯点击气泡特效样式 ========== */
         .click-bubble {
           position: fixed;
           border-radius: 50%;
@@ -1145,12 +1142,122 @@ inject:
             opacity: 0;
           }
         }
+
+        /* ========== 2. 打字机特效样式 (简化版，仅保留基础样式) ========== */
+        #site-subtitle {
+          min-height: 1.5em;
+          position: relative;
+        }
+        
+        #subtitle {
+          display: inline-block;
+          overflow: hidden;
+          white-space: nowrap;
+          width: 0; /* 初始宽度为0，JS会逐渐增加 */
+          max-width: 100%;
+          box-sizing: border-box;
+          vertical-align: bottom;
+          font-family: inherit;
+          color: inherit;
+          opacity: 0.85;
+          /* 初始状态：有光标 */
+          border-right: 2px solid;
+          border-color: currentColor;
+        }
+        
+        /* 打字完成后，移除光标 */
+        #subtitle.typed-complete {
+          border-right: none;
+        }
       </style>
   
   bottom:
     - |
       <script>
-        // ========== 纯点击特效 ==========
+        // ========== 3. 手动实现打字机特效 (统一控制版) ==========
+        document.addEventListener('DOMContentLoaded', function() {
+          const subtitleEl = document.getElementById('subtitle');
+          const subtitleContainer = document.getElementById('site-subtitle');
+          
+          if (!subtitleEl || !subtitleContainer) {
+            console.warn('未找到副标题元素，跳过打字机效果');
+            return;
+          }
+          
+          console.log('🎬 开始初始化打字机效果');
+          
+          // 确保容器有内容
+          const targetText = 'Try to do better';
+          
+          // 重置状态：清空内容，宽度设为0，确保有光标
+          subtitleEl.textContent = '';
+          subtitleEl.style.width = '0';
+          subtitleEl.classList.remove('typed-complete');
+          subtitleEl.style.borderRightWidth = '2px';
+          subtitleEl.style.borderRightStyle = 'solid';
+          
+          // 打字机参数
+          let charIndex = 0;
+          const typeSpeed = 100; // 每个字符的毫秒数
+          let isTyping = true;
+          
+          // 光标闪烁效果（独立控制）
+          let isCursorVisible = true;
+          function blinkCursor() {
+            if (isTyping) {
+              subtitleEl.style.borderRightColor = isCursorVisible ? 'currentColor' : 'transparent';
+              isCursorVisible = !isCursorVisible;
+              setTimeout(blinkCursor, 500); // 光标闪烁速度：500ms
+            }
+          }
+          
+          // 打字函数
+          function typeCharacter() {
+            if (charIndex < targetText.length) {
+              // 添加字符
+              subtitleEl.textContent += targetText.charAt(charIndex);
+              charIndex++;
+              
+              // 计算并设置宽度（更精确的宽度控制）
+              const spanWidth = subtitleEl.scrollWidth;
+              subtitleEl.style.width = spanWidth + 'px';
+              
+              // 继续打下一个字符
+              setTimeout(typeCharacter, typeSpeed);
+            } else {
+              // 打字完成
+              isTyping = false;
+              // 确保光标可见
+              subtitleEl.style.borderRightColor = 'currentColor';
+              // 等待一下后移除光标
+              setTimeout(() => {
+                subtitleEl.classList.add('typed-complete');
+                subtitleEl.style.borderRightWidth = '0';
+                console.log('✅ 打字机效果完成');
+              }, 1000); // 打完字后光标保持1秒
+            }
+          }
+          
+          // 延迟开始，让页面先加载
+          setTimeout(() => {
+            // 开始光标闪烁
+            blinkCursor();
+            // 延迟300ms开始打字
+            setTimeout(typeCharacter, 300);
+          }, 800);
+          
+          // 清理可能的冲突：移除主题自带的Typed.js效果
+          if (window.typed) {
+            try {
+              window.typed.destroy();
+              console.log('🧹 已清理主题原有的Typed.js实例');
+            } catch (e) {
+              console.log('主题Typed.js清理失败:', e);
+            }
+          }
+        });
+
+        // ========== 4. 纯点击特效 ==========
         let activeBubbles = 0;
         const MAX_BUBBLES = 20;
         

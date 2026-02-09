@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Weiyang's blog
-subtitle: 'Try to do better'
-description: 'One and only one'
+title: Weiyang-blog
+subtitle: '记录学习与思考'
+description: ''
 keywords:
 author: 未央
-language: zh-CN
+language: en
 timezone: ''
 
 # URL
