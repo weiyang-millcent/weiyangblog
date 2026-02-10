@@ -573,8 +573,8 @@ share:
 # 评论系统配置已移到 source/_data/butterfly.yml
 # ========== 评论系统配置 ==========
 comments:
-  use: giscus
-  text: true
+  use: false
+  text: false
   lazyload: false
   count: true
   card: false
