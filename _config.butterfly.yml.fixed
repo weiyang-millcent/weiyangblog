@@ -1,0 +1,26 @@
+# 修复后的配置
+
+# 评论系统通用设置
+comments:
+  use: giscus
+  text: true
+  lazyload: false
+  count: true
+  card: false
+
+# Giscus专用设置（独立区块）
+giscus:
+  repo: weiyang-millcent/weiyangblog
+  repo_id: R_kgDORKpzYA
+  category: Announcements
+  category_id: DIC_kwDORKpzYM4C2HoZ
+  mapping: pathname
+  strict: 0
+  reactions_enabled: 1
+  emit_metadata: 0
+  input_position: top
+  theme:
+    light: catppuccin_latte
+    dark: catppuccin_mocha
+  lang: zh-CN
+  loading: lazy

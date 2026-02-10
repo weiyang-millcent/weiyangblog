@@ -1,0 +1,24 @@
+# Hexo + Butterfly 主题配置示例
+comments:
+  use: giscus
+  text: true
+  lazyload: false
+  count: true
+  card: false
+
+giscus:
+  enable: true
+  repo: weiyang-millcent/weiyangblog
+  repo_id: R_kgDORKpzYA
+  category: Announcements
+  category_id: DIC_kwDORKpzYM4C2HoZ
+  mapping: pathname
+  strict: false
+  reactions_enabled: true
+  emit_metadata: false
+  input_position: top
+  theme: 
+    light: catppuccin_latte
+    dark: catppuccin_mocha
+  lang: zh-CN
+  loading: lazy

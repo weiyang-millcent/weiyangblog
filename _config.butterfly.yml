@@ -571,31 +571,33 @@ share:
 # --------------------------------------
 
 # 评论系统配置已移到 source/_data/butterfly.yml
-# ========== 评论系统配置 ==========
+# 修复后的配置
+
+# 评论系统通用设置
 comments:
-  use: false
-  text: false
+  use: giscus
+  text: true
   lazyload: false
   count: true
   card: false
 
-  # Giscus配置
-  giscus:
-    repo: weiyang-millcent/weiyangblog
-    repo-id: R_kgDORKpzYA
-    category: Announcements
-    category-id: DIC_kwDORKpzYM4C2HoZ
-    mapping: pathname
-    strict: "0"
-    reactions-enabled: "1"
-    emit-metadata: "0"
-    input-position: bottom
-    theme: preferred_color_scheme
-    lang: zh-CN
-    crossorigin: anonymous
-    async: true
-
-# https://waline.js.org/
+# Giscus专用设置（独立区块）
+giscus:
+  repo: weiyang-millcent/weiyangblog
+  repo_id: R_kgDORKpzYA
+  category: Announcements
+  category_id: DIC_kwDORKpzYM4C2HoZ
+  mapping: pathname
+  strict: 0
+  reactions_enabled: 1
+  emit_metadata: 0
+  input_position: top
+  theme:
+    light: catppuccin_latte
+    dark: catppuccin_mocha
+  lang: zh-CN
+  loading: lazy
+# ========== 评论系统配置 ==========
 waline:
   serverURL:
   bg:
@@ -1140,47 +1142,6 @@ inject:
         #subtitle.typed-complete {
           border-right: none;
         }
-        
-        /* ========== 3. Giscus强制样式 ========== */
-        /* 确保我们的注入区域明显显示 */
-        .giscus-comments-section {
-          margin-top: 3rem !important;
-          padding-top: 2rem !important;
-          border-top: 1px solid #eee !important;
-          min-height: 400px !important;
-          position: relative !important;
-          display: block !important;
-        }
-        
-        .giscus-comments-section::before {
-          content: "💬 评论" !important;
-          display: block !important;
-          font-size: 1.5rem !important;
-          font-weight: bold !important;
-          margin-bottom: 1.5rem !important;
-          color: #333 !important;
-        }
-        
-        .giscus-frame, .giscus {
-          width: 100% !important;
-          border: none !important;
-          min-height: 350px !important;
-          border-radius: 8px !important;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
-          display: block !important;
-          visibility: visible !important;
-          opacity: 1 !important;
-        }
-        
-        /* 加载状态提示 */
-        .giscus-comments-section:empty::after {
-          content: "评论系统加载中..." !important;
-          display: block !important;
-          text-align: center !important;
-          padding: 40px !important;
-          color: #666 !important;
-          font-style: italic !important;
-        }
       </style>
   
   bottom:
@@ -1261,105 +1222,17 @@ inject:
           }
         });
         
-        // ========== 3. 强制加载Giscus（终极保障） ==========
-        document.addEventListener('DOMContentLoaded', function() {
-          console.log('🚀 开始强制加载Giscus评论系统...');
-          
-          // 等待页面完全加载
-          setTimeout(function() {
-            // 检查是否已有我们的Giscus区域
-            let giscusSection = document.querySelector('.giscus-comments-section');
-            
-            // 如果没有，创建它
-            if (!giscusSection) {
-              console.log('📦 创建Giscus评论区域...');
-              giscusSection = document.createElement('div');
-              giscusSection.className = 'giscus-comments-section';
-              
-              // 添加到文章末尾
-              const article = document.querySelector('article');
-              if (article) {
-                article.parentNode.insertBefore(giscusSection, article.nextSibling);
-              } else {
-                document.body.appendChild(giscusSection);
-              }
-            }
-            
-            // 检查是否已有Giscus脚本
-            const existingScript = document.querySelector('script[src*="giscus.app"]');
-            const existingIframe = document.querySelector('.giscus-frame, .giscus iframe');
-            
-            // 如果没有Giscus内容，强制加载
-            if (!existingIframe || !existingScript) {
-              console.log('🔄 强制加载Giscus脚本...');
-              
-              // 移除可能存在的旧脚本
-              if (existingScript) existingScript.remove();
-              
-              // 创建新脚本
-              const script = document.createElement('script');
-              script.src = 'https://giscus.app/client.js';
-              script.async = true;
-              script.crossOrigin = 'anonymous';
-              
-              // 配置
-              const config = {
-                'data-repo': 'weiyang-millcent/weiyangblog',
-                'data-repo-id': 'R_kgDORKpzYA',
-                'data-category': 'Announcements',
-                'data-category-id': 'DIC_kwDORKpzYM4C2HoZ',
-                'data-mapping': 'pathname',
-                'data-strict': '0',
-                'data-reactions-enabled': '1',
-                'data-emit-metadata': '0',
-                'data-input-position': 'bottom',
-                'data-theme': 'light',  // 先用light确保显示
-                'data-lang': 'zh-CN'
-              };
-              
-              Object.entries(config).forEach(([key, value]) => {
-                script.setAttribute(key, value);
-              });
-              
-              // 添加到Giscus区域
-              giscusSection.appendChild(script);
-              console.log('✅ Giscus脚本已强制加载');
-              
-              // 添加加载提示
-              const loadingMsg = document.createElement('div');
-              loadingMsg.id = 'giscus-loading-msg';
-              loadingMsg.innerHTML = '<p style="text-align:center;color:#666;padding:20px;font-style:italic;">评论系统加载中，请稍候...</p>';
-              giscusSection.appendChild(loadingMsg);
-              
-              // 5秒后移除加载提示
-              setTimeout(() => {
-                const msg = document.getElementById('giscus-loading-msg');
-                if (msg) msg.remove();
-              }, 5000);
-            } else {
-              console.log('✅ Giscus已存在，无需重新加载');
-            }
-            
-          }, 1500); // 延迟1.5秒，确保页面加载完成
-        });
-        
-        // ========== 4. 监控Giscus加载状态 ==========
-        // 定期检查Giscus是否正常显示
-        setInterval(() => {
-          const giscusIframe = document.querySelector('.giscus-frame, .giscus iframe');
-          const giscusSection = document.querySelector('.giscus-comments-section');
-          
-          if (giscusSection && !giscusIframe) {
-            // 如果区域存在但没有iframe，重新加载
-            console.log('⚠️ Giscus区域存在但没有iframe，尝试重新加载...');
-            const script = document.querySelector('script[src*="giscus.app"]');
-            if (script) {
-              const newScript = script.cloneNode(true);
-              script.remove();
-              giscusSection.appendChild(newScript);
-            }
+        // ========== 3. Giscus主题样式微调（可选）==========
+        // 如果主题自带的Giscus样式不协调，可以微调
+        setTimeout(() => {
+          const giscusFrame = document.querySelector('.giscus-frame');
+          if (giscusFrame) {
+            // 微调样式使其更协调
+            giscusFrame.style.borderRadius = '8px';
+            giscusFrame.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            giscusFrame.style.border = '1px solid #eaeaea';
           }
-        }, 10000); // 每10秒检查一次
+        }, 3000);
       </script>
 
 # Don't modify the following settings unless you know how they work
@@ -1438,7 +1311,3 @@ CDN:
 custom_file_path:
   comments: source/_data/comments.pug
 
-# ========== 评论系统配置 ==========
-
-# ========== 评论系统配置 ==========
-# 关闭主题自带的评论系统，用我们的脚本代替
