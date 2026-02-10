@@ -1,0 +1,48 @@
+# ========== 评论系统配置 ==========
+# 强制启用Giscus评论系统
+comments:
+  use: giscus
+  text: true
+  lazyload: false  # 先关闭懒加载，确保立即显示
+  count: true
+  card: false
+  
+  # Giscus配置
+  giscus:
+    repo: weiyang-millcent/weiyangblog
+    repo-id: R_kgDORKpzYA
+    category: Announcements
+    category-id: DIC_kwDORKpzYM4C2HoZ
+    mapping: pathname
+    strict: "0"
+    reactions-enabled: "1"
+    emit-metadata: "0"
+    input-position: bottom
+    theme: preferred_color_scheme
+    lang: zh-CN
+    crossorigin: anonymous
+    async: true
+
+# ========== 文章配置 ==========
+# 强制开启文章评论功能
+post:
+  comments: true
+  
+  # 文章元信息
+  post_meta:
+    page: true
+    date: true
+    updated: false
+    categories: true
+    tags: true
+  
+  # 版权信息
+  post_copyright:
+    enable: true
+    license: CC BY-NC-SA 4.0
+  
+  # 目录
+  toc:
+    enable: true
+    number: true
+    expand: false

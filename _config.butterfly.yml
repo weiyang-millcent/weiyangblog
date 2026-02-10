@@ -168,7 +168,7 @@ post_meta:
     # Choose: date / relative
     date_format: date
     categories: true
-    tags: false
+    tags: true
     label: true
   post:
     # Choose: left / center
@@ -180,6 +180,7 @@ post_meta:
     categories: true
     tags: true
     label: true
+    comments: true
 
 # --------------------------------------
 # Index page settings
@@ -569,65 +570,31 @@ share:
 # Comments System
 # --------------------------------------
 
+# 评论系统配置已移到 source/_data/butterfly.yml
+# ========== 评论系统配置 ==========
 comments:
-  # Up to two comments system, the first will be shown as default
-  # Leave it empty if you don't need comments
-  # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/Artalk
-  # Format of two comments system : Disqus,Waline
-  use:
-  # Display the comment name next to the button
+  use: giscus
   text: true
-  # Lazyload: The comment system will be load when comment element enters the browser's viewport.
-  # If you set it to true, the comment count will be invalid
   lazyload: false
-  # Display comment count in post's top_img
-  count: false
-  # Display comment count in Home Page
-  card_post_count: false
+  count: true
+  card: false
 
-# Disqus
-# https://disqus.com/
-disqus:
-  shortname:
-  # For newest comments widget
-  apikey:
+  # Giscus配置
+  giscus:
+    repo: weiyang-millcent/weiyangblog
+    repo-id: R_kgDORKpzYA
+    category: Announcements
+    category-id: DIC_kwDORKpzYM4C2HoZ
+    mapping: pathname
+    strict: "0"
+    reactions-enabled: "1"
+    emit-metadata: "0"
+    input-position: bottom
+    theme: preferred_color_scheme
+    lang: zh-CN
+    crossorigin: anonymous
+    async: true
 
-# Alternative Disqus - Render comments with Disqus API
-# https://github.com/SukkaW/DisqusJS
-disqusjs:
-  shortname:
-  apikey:
-  option:
-
-# Livere
-# https://www.livere.com/
-livere:
-  uid:
-
-# Gitalk
-# https://github.com/gitalk/gitalk
-gitalk:
-  client_id:
-  client_secret:
-  repo:
-  owner:
-  admin:
-  option:
-
-# Valine
-# https://valine.js.org
-valine:
-  appId:
-  appKey:
-  avatar: monsterid
-  # This configuration is suitable for domestic custom domain name users, overseas version will be automatically detected (no need to manually fill in)
-  serverURLs:
-  bg:
-  # Use Valine visitor count as the page view count
-  visitor: false
-  option:
-
-# Waline - A simple comment system with backend support fork from Valine
 # https://waline.js.org/
 waline:
   serverURL:
@@ -670,15 +637,21 @@ twikoo:
 
 # Giscus
 # https://giscus.app/
-giscus:
-  repo:
-  repo_id:
-  category_id:
-  light_theme: light
-  dark_theme: dark
-  js:
-  option:
-
+    giscus:
+    repo: weiyang-millcent/weiyangblog
+    repo_id: R_kgDORKpzYA
+    category: Announcements
+    category_id: DIC_kwDORKpzYM4C2HoZ
+    mapping: pathname
+    strict: "0"
+    reactionsEnabled: "1"
+    emitMetadata: "0"
+    inputPosition: bottom
+    theme: preferred_color_scheme
+    lang: zh-CN
+    crossorigin: anonymous
+    async: true
+    loading: lazy
 # Remark42
 # https://remark42.com/docs/configuration/frontend/
 remark42:
@@ -1113,7 +1086,7 @@ inject:
   head:
     - |
       <style>
-        /* ========== 1. 纯点击气泡特效样式 ========== */
+        /* ========== 1. 点击气泡特效样式 ========== */
         .click-bubble {
           position: fixed;
           border-radius: 50%;
@@ -1143,7 +1116,7 @@ inject:
           }
         }
 
-        /* ========== 2. 打字机特效样式 (简化版，仅保留基础样式) ========== */
+        /* ========== 2. 打字机特效样式 ========== */
         #site-subtitle {
           min-height: 1.5em;
           position: relative;
@@ -1153,145 +1126,122 @@ inject:
           display: inline-block;
           overflow: hidden;
           white-space: nowrap;
-          width: 0; /* 初始宽度为0，JS会逐渐增加 */
+          width: 0;
           max-width: 100%;
           box-sizing: border-box;
           vertical-align: bottom;
           font-family: inherit;
           color: inherit;
           opacity: 0.85;
-          /* 初始状态：有光标 */
           border-right: 2px solid;
           border-color: currentColor;
         }
         
-        /* 打字完成后，移除光标 */
         #subtitle.typed-complete {
           border-right: none;
+        }
+        
+        /* ========== 3. Giscus强制样式 ========== */
+        /* 确保我们的注入区域明显显示 */
+        .giscus-comments-section {
+          margin-top: 3rem !important;
+          padding-top: 2rem !important;
+          border-top: 1px solid #eee !important;
+          min-height: 400px !important;
+          position: relative !important;
+          display: block !important;
+        }
+        
+        .giscus-comments-section::before {
+          content: "💬 评论" !important;
+          display: block !important;
+          font-size: 1.5rem !important;
+          font-weight: bold !important;
+          margin-bottom: 1.5rem !important;
+          color: #333 !important;
+        }
+        
+        .giscus-frame, .giscus {
+          width: 100% !important;
+          border: none !important;
+          min-height: 350px !important;
+          border-radius: 8px !important;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+        
+        /* 加载状态提示 */
+        .giscus-comments-section:empty::after {
+          content: "评论系统加载中..." !important;
+          display: block !important;
+          text-align: center !important;
+          padding: 40px !important;
+          color: #666 !important;
+          font-style: italic !important;
         }
       </style>
   
   bottom:
     - |
       <script>
-        // ========== 3. 手动实现打字机特效 (统一控制版) ==========
+        // ========== 1. 打字机特效 ==========
         document.addEventListener('DOMContentLoaded', function() {
           const subtitleEl = document.getElementById('subtitle');
-          const subtitleContainer = document.getElementById('site-subtitle');
+          if (!subtitleEl) return;
           
-          if (!subtitleEl || !subtitleContainer) {
-            console.warn('未找到副标题元素，跳过打字机效果');
-            return;
-          }
-          
-          console.log('🎬 开始初始化打字机效果');
-          
-          // 确保容器有内容
           const targetText = 'Try to do better';
-          
-          // 重置状态：清空内容，宽度设为0，确保有光标
           subtitleEl.textContent = '';
           subtitleEl.style.width = '0';
           subtitleEl.classList.remove('typed-complete');
-          subtitleEl.style.borderRightWidth = '2px';
-          subtitleEl.style.borderRightStyle = 'solid';
           
-          // 打字机参数
           let charIndex = 0;
-          const typeSpeed = 100; // 每个字符的毫秒数
-          let isTyping = true;
+          const typeSpeed = 100;
           
-          // 光标闪烁效果（独立控制）
-          let isCursorVisible = true;
-          function blinkCursor() {
-            if (isTyping) {
-              subtitleEl.style.borderRightColor = isCursorVisible ? 'currentColor' : 'transparent';
-              isCursorVisible = !isCursorVisible;
-              setTimeout(blinkCursor, 500); // 光标闪烁速度：500ms
-            }
-          }
-          
-          // 打字函数
           function typeCharacter() {
             if (charIndex < targetText.length) {
-              // 添加字符
               subtitleEl.textContent += targetText.charAt(charIndex);
               charIndex++;
-              
-              // 计算并设置宽度（更精确的宽度控制）
-              const spanWidth = subtitleEl.scrollWidth;
-              subtitleEl.style.width = spanWidth + 'px';
-              
-              // 继续打下一个字符
+              subtitleEl.style.width = subtitleEl.scrollWidth + 'px';
               setTimeout(typeCharacter, typeSpeed);
             } else {
-              // 打字完成
-              isTyping = false;
-              // 确保光标可见
-              subtitleEl.style.borderRightColor = 'currentColor';
-              // 等待一下后移除光标
               setTimeout(() => {
                 subtitleEl.classList.add('typed-complete');
                 subtitleEl.style.borderRightWidth = '0';
-                console.log('✅ 打字机效果完成');
-              }, 1000); // 打完字后光标保持1秒
+              }, 1000);
             }
           }
           
-          // 延迟开始，让页面先加载
           setTimeout(() => {
-            // 开始光标闪烁
-            blinkCursor();
-            // 延迟300ms开始打字
             setTimeout(typeCharacter, 300);
           }, 800);
-          
-          // 清理可能的冲突：移除主题自带的Typed.js效果
-          if (window.typed) {
-            try {
-              window.typed.destroy();
-              console.log('🧹 已清理主题原有的Typed.js实例');
-            } catch (e) {
-              console.log('主题Typed.js清理失败:', e);
-            }
-          }
         });
 
-        // ========== 4. 纯点击特效 ==========
+        // ========== 2. 点击气泡特效 ==========
         let activeBubbles = 0;
         const MAX_BUBBLES = 20;
         
         document.addEventListener('click', function(e) {
-          // 清理旧气泡
           if (activeBubbles > MAX_BUBBLES) {
-            const bubbles = document.querySelectorAll('.click-bubble');
-            for (let i = 0; i < 5; i++) {
-              if (bubbles[i]) bubbles[i].remove();
-            }
+            document.querySelectorAll('.click-bubble').forEach((b, i) => i < 5 && b.remove());
             activeBubbles = Math.max(0, activeBubbles - 5);
           }
           
-          // 创建3-5个气泡
           const bubbleCount = 3 + Math.floor(Math.random() * 3);
           
           for (let i = 0; i < bubbleCount; i++) {
             activeBubbles++;
-            
             const bubble = document.createElement('div');
             bubble.className = 'click-bubble';
             
-            // 鲜艳的颜色
             const colors = [
               '#FF5252', '#FF4081', '#E040FB', '#7C4DFF', 
               '#536DFE', '#448AFF', '#40C4FF', '#18FFFF',
               '#64FFDA', '#69F0AE', '#B2FF59', '#EEFF41'
             ];
             const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            // 大尺寸气泡 30-50px
             const size = 30 + Math.random() * 20;
-            
-            // 大范围扩散
             const angle = Math.random() * Math.PI * 2;
             const distance = 20 + Math.random() * 40;
             const offsetX = Math.cos(angle) * distance;
@@ -1307,16 +1257,109 @@ inject:
             `;
             
             document.body.appendChild(bubble);
-            
-            // 动画结束后移除
-            setTimeout(() => {
-              if (bubble.parentNode) {
-                bubble.remove();
-                activeBubbles--;
-              }
-            }, 1000);
+            setTimeout(() => bubble.parentNode && (bubble.remove(), activeBubbles--), 1000);
           }
         });
+        
+        // ========== 3. 强制加载Giscus（终极保障） ==========
+        document.addEventListener('DOMContentLoaded', function() {
+          console.log('🚀 开始强制加载Giscus评论系统...');
+          
+          // 等待页面完全加载
+          setTimeout(function() {
+            // 检查是否已有我们的Giscus区域
+            let giscusSection = document.querySelector('.giscus-comments-section');
+            
+            // 如果没有，创建它
+            if (!giscusSection) {
+              console.log('📦 创建Giscus评论区域...');
+              giscusSection = document.createElement('div');
+              giscusSection.className = 'giscus-comments-section';
+              
+              // 添加到文章末尾
+              const article = document.querySelector('article');
+              if (article) {
+                article.parentNode.insertBefore(giscusSection, article.nextSibling);
+              } else {
+                document.body.appendChild(giscusSection);
+              }
+            }
+            
+            // 检查是否已有Giscus脚本
+            const existingScript = document.querySelector('script[src*="giscus.app"]');
+            const existingIframe = document.querySelector('.giscus-frame, .giscus iframe');
+            
+            // 如果没有Giscus内容，强制加载
+            if (!existingIframe || !existingScript) {
+              console.log('🔄 强制加载Giscus脚本...');
+              
+              // 移除可能存在的旧脚本
+              if (existingScript) existingScript.remove();
+              
+              // 创建新脚本
+              const script = document.createElement('script');
+              script.src = 'https://giscus.app/client.js';
+              script.async = true;
+              script.crossOrigin = 'anonymous';
+              
+              // 配置
+              const config = {
+                'data-repo': 'weiyang-millcent/weiyangblog',
+                'data-repo-id': 'R_kgDORKpzYA',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDORKpzYM4C2HoZ',
+                'data-mapping': 'pathname',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '0',
+                'data-input-position': 'bottom',
+                'data-theme': 'light',  // 先用light确保显示
+                'data-lang': 'zh-CN'
+              };
+              
+              Object.entries(config).forEach(([key, value]) => {
+                script.setAttribute(key, value);
+              });
+              
+              // 添加到Giscus区域
+              giscusSection.appendChild(script);
+              console.log('✅ Giscus脚本已强制加载');
+              
+              // 添加加载提示
+              const loadingMsg = document.createElement('div');
+              loadingMsg.id = 'giscus-loading-msg';
+              loadingMsg.innerHTML = '<p style="text-align:center;color:#666;padding:20px;font-style:italic;">评论系统加载中，请稍候...</p>';
+              giscusSection.appendChild(loadingMsg);
+              
+              // 5秒后移除加载提示
+              setTimeout(() => {
+                const msg = document.getElementById('giscus-loading-msg');
+                if (msg) msg.remove();
+              }, 5000);
+            } else {
+              console.log('✅ Giscus已存在，无需重新加载');
+            }
+            
+          }, 1500); // 延迟1.5秒，确保页面加载完成
+        });
+        
+        // ========== 4. 监控Giscus加载状态 ==========
+        // 定期检查Giscus是否正常显示
+        setInterval(() => {
+          const giscusIframe = document.querySelector('.giscus-frame, .giscus iframe');
+          const giscusSection = document.querySelector('.giscus-comments-section');
+          
+          if (giscusSection && !giscusIframe) {
+            // 如果区域存在但没有iframe，重新加载
+            console.log('⚠️ Giscus区域存在但没有iframe，尝试重新加载...');
+            const script = document.querySelector('script[src*="giscus.app"]');
+            if (script) {
+              const newScript = script.cloneNode(true);
+              script.remove();
+              giscusSection.appendChild(newScript);
+            }
+          }
+        }, 10000); // 每10秒检查一次
       </script>
 
 # Don't modify the following settings unless you know how they work
@@ -1390,3 +1433,12 @@ CDN:
     # valine:
     # waline_css:
     # waline_js:
+
+# 启用自定义注入
+custom_file_path:
+  comments: source/_data/comments.pug
+
+# ========== 评论系统配置 ==========
+
+# ========== 评论系统配置 ==========
+# 关闭主题自带的评论系统，用我们的脚本代替
