@@ -103,6 +103,17 @@ theme: butterfly
 deploy:
   type: ''
 
+# Password protection for selected posts (hexo-blog-encrypt)
+encrypt:
+  message: 请输入访问密码后查看本文。
+  wrong_pass_message: 密码错误，请重新输入。
+  decryptButton:
+    show: true
+    text: 解锁文章
+  autoSave: false
+  kdf:
+    iterations: 600000
+
 # ----- 插件配置 -----
 ## 站点地图
 sitemap:
