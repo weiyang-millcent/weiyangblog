@@ -5,6 +5,10 @@ categories: ["reverse"]
 tags: ["IDA", "TEA", "XTEA", "学习笔记"]
 description: 记录对chall6的逆向分析过程，从IDA中提取TEA/XTEA密钥和密文，并通过逆向轮函数完成解密。
 cover: /imgs/20260925-tea6-cover.png
+password: "8888"
+abstract: 本文已设置访问密码，请输入密码后查看完整题解。
+message: 请输入访问密码后查看本文。
+wrong_pass_message: 密码错误，请重新输入。
 toc: true
 comments: true
 ---
