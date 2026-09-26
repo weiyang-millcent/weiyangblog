@@ -5,6 +5,10 @@ categories: ["misc"]
 tags: ["流量分析", "Wireshark", "TLS", "ZIP弱口令", "PNG"]
 description: 从流量包中提取TLS密钥日志并解密HTTPS，导出加密ZIP、爆破四位弱口令，最后修复PNG高度得到Flag。
 cover: /imgs/20260926-tls-zip-cover.jpg
+password: "8888"
+abstract: 本文已设置访问密码，请输入密码后查看完整题解。
+message: 请输入访问密码后查看本文。
+wrong_pass_message: 密码错误，请重新输入。
 toc: true
 comments: true
 ---
