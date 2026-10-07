@@ -4,7 +4,11 @@ date: 2026-07-22
 categories: ["逆向工程"]
 tags: ["学习笔记"]
 description: 记录re的学习过程。
-cover: /img/202607220840247024.png
+cover: /imgs/20261007-cover-re8.png
+password: "8888"
+abstract: 本文已设置访问密码，请输入密码后查看完整题解。
+message: 请输入访问密码后查看本文。
+wrong_pass_message: 密码错误，请重新输入。
 toc: true  
 comments: true  
 
